@@ -1,0 +1,41 @@
+//Calcolo di moltiplicazione, somma e differenza
+
+
+string nome := "Michele";
+int a;
+
+proc main()void :
+      	int a, b, c:=0;
+      	a, b, c := multAddDiff();
+      	write ("Ciao", nome);
+      	writeNewLines(2);
+
+      	write("I tuoi valori sono:\n",a,b,c);
+
+      	->
+ corp;
+
+
+
+proc multAddDiff ()int, int, int:
+	int primo, secondo, mul, add, diff;
+
+	write("Inserire il primo argomento:\n");
+	readln(primo);
+	write("Inserire il secondo argomento:\n");
+	readln(secondo);
+	mul, add, diff := primo*secondo, secondo + primo, primo - primo;
+	-> mul,add,diff
+corp;
+
+
+
+proc writeNewLines(int n)void :
+	while n >0 do
+		write("\n");
+		n := n -1;
+	od;
+	->
+corp;
+
+

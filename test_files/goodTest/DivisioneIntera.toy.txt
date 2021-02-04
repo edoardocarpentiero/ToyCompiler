@@ -1,0 +1,23 @@
+
+/*
+Divisione numeri interi
+*/
+
+int primo, secondo, tot;
+
+proc divisione ()int:
+    write("Inserire il dividendo:\n");
+    readln(primo);
+    write("Inserire il divisore:\n");
+    readln(secondo);
+    tot:=primo/secondo;
+    ->tot
+corp;
+
+proc main()void :
+    int a:=0;
+    write(divisione());
+    ->
+corp;
+
+

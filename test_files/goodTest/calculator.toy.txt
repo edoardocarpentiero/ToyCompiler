@@ -1,0 +1,44 @@
+/*
+Calcolatrice
+*/
+
+float primo, secondo, tot;
+int op;
+
+
+proc calc ()float:
+
+  write("Inserire il primo argomento:\n");
+  readln(primo);
+  write("Inserire il secondo argomento:\n");
+  readln(secondo);
+
+  write("Inserire operatore:\n");
+  write("1 per Addizione \n");
+  write("2 per Sottrazione \n");
+  write("3 per Moltiplicazione \n");
+  write("4 per Divisione \n");
+
+  readln(op);
+
+
+  if op = 1 then
+    tot:=primo+secondo;
+    elif op = 2 then
+        tot:=primo-secondo;
+  elif op = 3 then
+        tot:=primo*secondo;
+  elif op = 4 then
+        tot:=primo/secondo;
+     else
+        write("errore\n");
+    fi;
+    ->tot
+corp;
+
+
+proc main()void :
+  float a:=calc();
+  write("il risultato e' ",a);
+  ->
+corp;

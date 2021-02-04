@@ -1,0 +1,297 @@
+// CS2A Language Processing
+//
+// Description of parser for circuit description language.
+// See Lecture Note 12 for further explanation.
+//
+// This implements the following grammar
+//
+// Circuit -> SEQ Series END | PAR Parallel END | RESISTOR
+//
+// Series -> Circuit Series | empty
+// Parallel -> Circuit Parallel | empty
+//
+// The nonterminals Series and Parallel are distinguished so that we can
+// give them different semantic actions, each calculating resistance in an
+// appropriate manner.
+//
+// Ian Stark
+// Declare terminals and nonterminals in the grammar
+import java_cup.runtime.*;
+import syntax.*;
+import syntax.expr.*;
+import syntax.expr.ExprLogicOp.*;
+import syntax.expr.ExprMathOp.*;
+import syntax.expr.ExprRelopOp.*;
+import syntax.expr.ExprValue.*;
+import syntax.procedure.*;
+import syntax.statement.*;
+import syntax.initId.*;
+import syntax.type.*;
+import java.util.ArrayList;
+import java_cup.runtime.ComplexSymbolFactory.ComplexSymbol;
+import exception.CompilerException;
+
+
+class Parser;
+parser code{:
+
+public void report_error(String message, Object info) {
+  if (info instanceof ComplexSymbol) {
+     ComplexSymbol cs = (ComplexSymbol)info;
+     String msg = String.format("%s for input symbol %s (L:%s, C:%s)", message, cs.getName(), cs.getLeft().getLine()-1, cs.getRight().getColumn());
+     System.err.println(msg);
+   } else {
+     System.err.println(message);
+   }
+
+}
+
+public Symbol scan() throws Exception {
+        Symbol sym = this.getScanner().next_token();
+        if(sym.sym==ParserSym.error){
+            throw new CompilerException("Lexical Error! "+sym.value.toString());
+        }
+            //System.err.println(sym.value.toString());
+        return sym != null ? sym : this.getSymbolFactory().newSymbol("END_OF_FILE", this.EOF_sym());
+    }
+
+:}
+
+
+// CUP specification for a simple expression evaluator (w/ actions)
+
+
+/* Terminals (tokens returned by the scanner). */
+terminal String WHILE, DO, OD;
+terminal String LPAR, RPAR, COMMA, SEMI;
+terminal String LT, LE, EQ, NE, GT, GE, ASSIGN, AND, OR, NOT, NULL;
+terminal String PLUS, MINUS, DIV, TIMES, UMINUS ;
+terminal String PROC, COLON, CORP;
+terminal String IF, THEN, ELSE,ELIF,FI; /* IF condition*/
+terminal String RETURN;
+
+terminal Integer INT_CONST;
+terminal Float FLOAT_CONST;
+terminal String STRING_CONST;
+terminal boolean TRUE,FALSE;
+
+terminal String STRING, INT, FLOAT, BOOL, VOID;
+terminal String ID;
+terminal String READ, WRITE;
+
+
+
+/* Non-terminals */
+non terminal Program Program;
+non terminal ArrayList<VarDecl> VarDeclList;
+non terminal ArrayList<Proc> ProcList;
+non terminal VarDecl VarDecl;
+non terminal Proc Proc;
+non terminal Type Type;
+non terminal ArrayList<IdInit> IdListInit;
+non terminal Expr Expr;
+non terminal ArrayList<ParDecl> ParamDeclList;
+non terminal ArrayList<ResultType> ResultTypeList;
+non terminal ArrayList<Statement> StatList;
+non terminal ArrayList<Expr> ReturnExprs;
+non terminal ResultType ResultType;
+non terminal ArrayList<Expr> ExprList;
+non terminal ParDecl ParDecl;
+non terminal ArrayList<Identifier> IdList;
+non terminal Statement Stat;
+
+non terminal IfStatement IfStat;
+non terminal ArrayList<ElifStatement> ElifList;
+non terminal ElifStatement Elif;
+non terminal ElseStatement Else;
+non terminal WhileStatement WhileStat;
+non terminal ReadlnStatement ReadlnStat;
+non terminal WriteStatement WriteStat;
+non terminal AssignStatement AssignStat;
+non terminal CallProc CallProc;
+
+
+
+/* Precedences */
+precedence left AND, OR;
+precedence left LT, LE, EQ, NE, GT, GE;
+precedence left PLUS, MINUS;
+precedence left TIMES, DIV;
+precedence left UMINUS, NOT;
+
+
+Program     ::= VarDeclList:varDeclList ProcList:procList {: RESULT = new Program(varDeclListxleft,varDeclListxright,varDeclList,procList);:};
+
+VarDeclList ::= VarDecl:varDecl VarDeclList:varDeclList {:
+                                if(varDeclList==null)
+                                    varDeclList = new ArrayList<VarDecl>();
+                                varDeclList.add(0,varDecl);
+                                RESULT = varDeclList;:}
+                |/*vuoto*/{::};
+
+ProcList    ::= Proc:proc {: RESULT= new ArrayList<Proc>();
+                            RESULT.add(proc);
+                            :}
+                | Proc:proc ProcList:procList {:procList.add(0,proc);
+                                                RESULT = procList;
+                                                :};
+
+VarDecl     ::= Type:type IdListInit:idListInit SEMI {:RESULT= new VarDecl(typexleft,typexright,type,idListInit);:};
+
+
+Type        ::= INT:intType {:RESULT= new Type(intTypexleft,intTypexright,TypesVar.INT);:}
+                |
+                BOOL:boolType {:RESULT= new Type(boolTypexleft,boolTypexright,TypesVar.BOOL);:}
+                |
+                FLOAT:floatType  {:RESULT= new Type(floatTypexleft,floatTypexright,TypesVar.FLOAT);:}
+                |
+                STRING:stringType {:RESULT= new Type(stringTypexleft,stringTypexright,TypesVar.STRING);:};
+
+
+IdListInit  ::= ID:idvalue {: RESULT= new ArrayList<IdInit>();
+                            RESULT.add(new IdInit(idvaluexleft,idvaluexright,new Identifier(idvaluexleft,idvaluexright,idvalue)));:}
+                | IdListInit:idlistvalue COMMA ID:idvalue {:
+                idlistvalue.add(new IdInit(idvaluexleft,idvaluexright,new Identifier(idvaluexleft,idvaluexright,idvalue)));
+                RESULT=idlistvalue;:}
+                | ID:idvalue ASSIGN Expr:exprvalue {:
+                RESULT= new ArrayList<IdInit>();
+                RESULT.add(new IdInitAssign(idvaluexleft,idvaluexright,new Identifier(idvaluexleft,idvaluexright,idvalue),exprvalue));:}
+                | IdListInit:idlistvalue COMMA ID:idvalue ASSIGN Expr:exprvalue{:
+                idlistvalue.add(new IdInitAssign(idvaluexleft,idvaluexright,new Identifier(idvaluexleft,idvaluexright,idvalue),exprvalue));
+                RESULT=idlistvalue;
+                :};
+
+
+Proc        ::= PROC ID:idValue LPAR ParamDeclList:parDeclList RPAR ResultTypeList:resultTypeList COLON VarDeclList:varDeclListValue StatList:statListValue RETURN ReturnExprs:returnExprValue CORP SEMI
+                {:
+                    RESULT = new Proc(idValuexleft,idValuexright, new Identifier(idValuexleft,idValuexright,idValue), parDeclList, resultTypeList, new BodyProc(varDeclListValuexleft,varDeclListValuexright,varDeclListValue, statListValue, returnExprValue)); :}
+                | PROC ID:idValue LPAR ParamDeclList:parDeclList RPAR ResultTypeList:resultTypeList COLON VarDeclList:varDeclListValue RETURN ReturnExprs:returnExprValue CORP SEMI
+                {:
+                    RESULT = new Proc(idValuexleft,idValuexright, new Identifier(idValuexleft,idValuexright,idValue), parDeclList, resultTypeList, new BodyProc(varDeclListValuexleft,varDeclListValuexright,varDeclListValue, returnExprValue));  :}
+                | PROC ID:idValue LPAR RPAR ResultTypeList:resultTypeList COLON VarDeclList:varDeclListValue StatList:statListValue RETURN ReturnExprs:returnExprValue CORP SEMI
+                {:
+                    RESULT = new Proc(idValuexleft,idValuexright, new Identifier(idValuexleft,idValuexright,idValue), resultTypeList, new BodyProc(varDeclListValuexleft,varDeclListValuexright,varDeclListValue, statListValue,returnExprValue)); :}
+                | PROC ID:idValue LPAR RPAR ResultTypeList:resultTypeList COLON VarDeclList:varDeclListValue RETURN ReturnExprs:returnExprValue CORP SEMI
+                {:
+                    RESULT = new Proc(idValuexleft,idValuexright, new Identifier(idValuexleft,idValuexright,idValue), resultTypeList, new BodyProc(varDeclListValuexleft,varDeclListValuexright,varDeclListValue, returnExprValue)); :};
+
+
+ResultTypeList::= ResultType:resultType
+                        {:
+                            RESULT = new ArrayList<ResultType>();
+                            RESULT.add(0,resultType);
+                        :}
+                    | ResultType:resultType COMMA ResultTypeList:resultTypeList {:
+                        resultTypeList.add(0,resultType);
+                        RESULT = resultTypeList;
+                    :};
+
+
+ReturnExprs   ::= ExprList:exprListvalue{:
+                    RESULT = exprListvalue;
+                    :}
+                  | /*vuoto*/   ;
+
+ExprList      ::= Expr:exprvalue{:
+                    RESULT= new ArrayList<Expr>();
+                    RESULT.add(0,exprvalue);:}
+                  | Expr:exprvalue COMMA ExprList:exprlistvalue{:
+                   exprlistvalue.add(0,exprvalue);
+                   RESULT=exprlistvalue;:};
+
+
+ParamDeclList ::= ParDecl:parDeclValue{:
+                    RESULT= new ArrayList<ParDecl>();
+                    RESULT.add(parDeclValue);:}
+                  | ParamDeclList:parDeclListValue SEMI ParDecl:parDeclValue{:
+                    parDeclListValue.add(parDeclValue);
+                    RESULT=parDeclListValue;:};
+
+ParDecl       ::= Type:type IdList:idlistvalue{:RESULT = new ParDecl(typexleft, typexright, type,idlistvalue);:};
+
+IdList        ::= ID:idValue {:RESULT = new ArrayList<Identifier>();
+                                    RESULT.add(new Identifier(idValuexleft,idValuexright,idValue));
+                                    :}
+                  | IdList:idList COMMA ID:idValue {: idList.add(new Identifier(idValuexleft,idValuexright,idValue));
+                                                      RESULT = idList;
+                                                    :};
+
+ResultType    ::= Type:type {:RESULT = new ResultType(typexleft,typexright,type);:}
+                  | VOID:typeVoid {:RESULT = new ResultType(typeVoidxleft,typeVoidxright,new Type(TypesVar.VOID));:};
+
+
+StatList      ::= Stat:statValue {:
+                    RESULT= new ArrayList<Statement>();
+                    RESULT.add(statValue);:}
+                  | Stat: statValue StatList:statListValue{:
+                  statListValue.add(0,statValue);
+                  RESULT=statListValue;:};
+
+
+Stat          ::= IfStat:ifStatValue SEMI{:RESULT= ifStatValue;:}
+                  | WhileStat:whileStatValue SEMI {:RESULT=whileStatValue;:}
+                  | ReadlnStat:readStatValue SEMI {:RESULT=readStatValue;:}
+                  | WriteStat:writeStatValue SEMI {:RESULT=writeStatValue;:}
+                  | AssignStat:assignStatValue SEMI {:RESULT=assignStatValue;:}
+                  | CallProc:callProcValue SEMI {:RESULT=callProcValue;:};
+
+IfStat        ::= IF Expr:exprValue THEN StatList:statListValue ElifList:elifListValue Else:elseValue FI{:
+                    RESULT = new IfStatement(exprValuexleft,exprValuexright,statListValue,exprValue,elifListValue,elseValue);:};
+
+
+ElifList      ::= Elif:elifValue ElifList:elifListValue{:
+                            if(elifListValue==null){
+                                elifListValue=new ArrayList<ElifStatement>();
+                            }
+                            elifListValue.add(elifValue);
+                            RESULT=elifListValue;
+                :}
+                  |/*vuoto*/   ;
+
+
+Elif          ::= ELIF Expr:exprValue THEN StatList:statListValue{:RESULT = new ElifStatement(exprValuexleft,exprValuexright,exprValue,statListValue);:};
+
+
+Else          ::= ELSE StatList:statListValue{:RESULT = new ElseStatement(statListValuexleft,statListValuexright,statListValue);:}
+                  |/*vuoto*/;
+
+
+WhileStat     ::= WHILE StatList:statList RETURN Expr:expr DO StatList:statListDo OD {:RESULT = new WhileStatement(exprxleft,exprxright,statList,expr,statListDo);:}
+                  | WHILE Expr:expr DO StatList:statListDo OD {:RESULT = new WhileStatement(exprxleft,exprxright,expr,statListDo);:};
+
+
+ReadlnStat    ::= READ LPAR IdList:idList RPAR {: RESULT = new ReadlnStatement(idListxleft,idListxright,idList);:};
+
+
+WriteStat     ::= WRITE LPAR ExprList:exprList RPAR {:RESULT = new WriteStatement(exprListxleft,exprListxright,exprList);:};
+
+
+AssignStat    ::= IdList:idList ASSIGN ExprList:exprList{:RESULT = new AssignStatement(idListxleft,idListxright,idList,exprList);:};
+
+
+CallProc ::= ID:callProcName LPAR ExprList:exprList RPAR {:RESULT = new CallProc(callProcNamexleft,callProcNamexright,new Identifier(callProcNamexleft,callProcNamexright,callProcName),exprList);:}
+            | ID:callProcName LPAR RPAR {:RESULT = new CallProc(callProcNamexleft,callProcNamexright,new Identifier(callProcNamexleft,callProcNamexright,callProcName));:};
+
+
+Expr::=NULL:nullValue{:RESULT=new ExprOpNull(nullValuexleft,nullValuexright);:}
+        | TRUE:trueValue {: RESULT= new ExprOpTrue(trueValuexleft,trueValuexright,trueValue);:}
+        | FALSE:falseValue {: RESULT = new ExprOpFalse(falseValuexleft,falseValuexright,falseValue);:}
+        | INT_CONST:intValue {: RESULT = new ExprOpIntConst(intValuexleft,intValuexright,intValue);:}
+        | FLOAT_CONST:floatValue {:RESULT = new ExprOpFloatConst(floatValuexleft,floatValuexright,floatValue);:}
+        | STRING_CONST:stringValue {:RESULT = new ExprOpStringConst(stringValuexleft,stringValuexright,stringValue);:}
+        | ID:idValue {:RESULT = new Identifier(idValuexleft,idValuexright,idValue);:}
+        | CallProc:callProc {:RESULT=callProc;:}
+        | Expr:e1 PLUS Expr:e2 {: RESULT = new ExprOpMathPlus(e1xleft,e1xright,e1,e2);:}
+        | Expr:e1 MINUS Expr:e2 {: RESULT = new ExprOpMathSub(e1xleft,e1xright,e1,e2);:}
+        | Expr:e1 TIMES Expr:e2 {: RESULT = new ExprOpMathTimes(e1xleft,e1xright,e1,e2);:}
+        | Expr:e1 DIV Expr:e2 {: RESULT = new ExprOpMathDiv(e1xleft,e1xright,e1,e2);:}
+        | Expr:e1 AND Expr:e2 {: RESULT = new ExprOpLogicAND(e1xleft,e1xright,e1,e2);:}
+        | Expr:e1 OR Expr:e2 {: RESULT = new ExprOpLogicOR(e1xleft,e1xright,e1,e2);:}
+        | Expr:e1 GT Expr:e2 {: RESULT = new ExprOpRelopGT(e1xleft,e1xright,e1,e2);:}
+        | Expr:e1 GE Expr:e2 {: RESULT = new ExprOpRelopGE(e1xleft,e1xright,e1,e2);:}
+        | Expr:e1 LT Expr:e2 {: RESULT = new ExprOpRelopLT(e1xleft,e1xright,e1,e2);:}
+        | Expr:e1 LE Expr:e2 {: RESULT = new ExprOpRelopLE(e1xleft,e1xright,e1,e2);:}
+        | Expr:e1 EQ Expr:e2 {: RESULT = new ExprOpRelopEQ(e1xleft,e1xright,e1,e2);:}
+        | Expr:e1 NE Expr:e2 {: RESULT = new ExprOpRelopNE(e1xleft,e1xright,e1,e2);:}
+        | MINUS Expr:e1  {: RESULT = new ExprOpMathMinus(e1xleft,e1xright,e1);:} %prec UMINUS
+        | NOT Expr:e1 {:RESULT = new ExprOpLogicNOT(e1xleft,e1xright,e1);:};

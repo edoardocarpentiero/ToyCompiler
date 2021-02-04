@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Program>
+    <Proc>
+        <Identifier>(ID ,printPeg)</Identifier>
+        <ParDeclList>
+            <ParDecl>
+                <Type>(INT)</Type>
+                <Identifier>(ID ,peg)</Identifier>
+            </ParDecl>
+        </ParDeclList>
+        <ResultTypeList>
+            <ResultType>
+                <Type>(VOID)</Type>
+            </ResultType>
+        </ResultTypeList>
+        <BodyProc>
+            <VarDecl>
+                <Type>(STRING)</Type>
+                <IdInit>
+                    <Identifier>(ID ,a)</Identifier>
+                </IdInit>
+                <IdInit>
+                    <Identifier>(ID ,b)</Identifier>
+                </IdInit>
+            </VarDecl>
+            <IfStatement>
+                <ExprOpRelopEQ>
+                    <Identifier>(ID ,peg)</Identifier>
+                    <ExprOpIntConst>(INT_CONST, 1)</ExprOpIntConst>
+                </ExprOpRelopEQ>
+                <WriteStatement>
+                    <ExprOpStringConst>(STRING_CONST, left)</ExprOpStringConst>
+                </WriteStatement>
+                <ElifStatement>
+                    <ExprOpRelopEQ>
+                        <Identifier>(ID ,peg)</Identifier>
+                        <ExprOpIntConst>(INT_CONST, 2)</ExprOpIntConst>
+                    </ExprOpRelopEQ>
+                    <WriteStatement>
+                        <ExprOpStringConst>(STRING_CONST, center)</ExprOpStringConst>
+                    </WriteStatement>
+                </ElifStatement>
+                <ElseStatement>
+                    <WriteStatement>
+                        <ExprOpStringConst>(STRING_CONST, right)</ExprOpStringConst>
+                    </WriteStatement>
+                </ElseStatement>
+            </IfStatement>
+        </BodyProc>
+    </Proc>
+    <Proc>
+        <Identifier>(ID ,hanoi)</Identifier>
+        <ParDeclList>
+            <ParDecl>
+                <Type>(INT)</Type>
+                <Identifier>(ID ,n)</Identifier>
+                <Identifier>(ID ,toPeg)</Identifier>
+            </ParDecl>
+            <ParDecl>
+                <Type>(FLOAT)</Type>
+                <Identifier>(ID ,fromPeg)</Identifier>
+                <Identifier>(ID ,usingPeg)</Identifier>
+            </ParDecl>
+        </ParDeclList>
+        <ResultTypeList>
+            <ResultType>
+                <Type>(VOID)</Type>
+            </ResultType>
+        </ResultTypeList>
+        <BodyProc>
+            <IfStatement>
+                <ExprOpRelopNE>
+                    <Identifier>(ID ,n)</Identifier>
+                    <ExprOpIntConst>(INT_CONST, 0)</ExprOpIntConst>
+                </ExprOpRelopNE>
+                <CallProc>
+                    <Identifier>(ID ,hanoi)</Identifier>
+                    <ArgumentsProc>
+                        <ExprOpMathSub>
+                            <Identifier>(ID ,n)</Identifier>
+                            <ExprOpIntConst>(INT_CONST, 1)</ExprOpIntConst>
+                        </ExprOpMathSub>
+                        <Identifier>(ID ,fromPeg)</Identifier>
+                        <Identifier>(ID ,toPeg)</Identifier>
+                        <Identifier>(ID ,usingPeg)</Identifier>
+                    </ArgumentsProc>
+                </CallProc>
+                <WriteStatement>
+                    <ExprOpStringConst>(STRING_CONST, Move disk from )</ExprOpStringConst>
+                </WriteStatement>
+                <CallProc>
+                    <Identifier>(ID ,printPeg)</Identifier>
+                    <ArgumentsProc>
+                        <Identifier>(ID ,fromPeg)</Identifier>
+                    </ArgumentsProc>
+                </CallProc>
+                <WriteStatement>
+                    <ExprOpStringConst>(STRING_CONST,  peg to )</ExprOpStringConst>
+                </WriteStatement>
+                <CallProc>
+                    <Identifier>(ID ,printPeg)</Identifier>
+                    <ArgumentsProc>
+                        <Identifier>(ID ,toPeg)</Identifier>
+                    </ArgumentsProc>
+                </CallProc>
+                <WriteStatement>
+                    <ExprOpStringConst>(STRING_CONST,  peg.\n)</ExprOpStringConst>
+                </WriteStatement>
+                <CallProc>
+                    <Identifier>(ID ,hanoi)</Identifier>
+                    <ArgumentsProc>
+                        <ExprOpMathSub>
+                            <Identifier>(ID ,n)</Identifier>
+                            <ExprOpIntConst>(INT_CONST, 1)</ExprOpIntConst>
+                        </ExprOpMathSub>
+                        <Identifier>(ID ,usingPeg)</Identifier>
+                        <Identifier>(ID ,fromPeg)</Identifier>
+                        <Identifier>(ID ,toPeg)</Identifier>
+                    </ArgumentsProc>
+                </CallProc>
+            </IfStatement>
+        </BodyProc>
+    </Proc>
+    <Proc>
+        <Identifier>(ID ,main)</Identifier>
+        <ResultTypeList>
+            <ResultType>
+                <Type>(VOID)</Type>
+            </ResultType>
+        </ResultTypeList>
+        <BodyProc>
+            <VarDecl>
+                <Type>(INT)</Type>
+                <IdInitAssign>
+                    <Identifier>(ID ,n)</Identifier>
+                    <ExprOpIntConst>(INT_CONST, 0)</ExprOpIntConst>
+                </IdInitAssign>
+            </VarDecl>
+            <WriteStatement>
+                <ExprOpStringConst>(STRING_CONST, How many pegs? )</ExprOpStringConst>
+            </WriteStatement>
+            <ReadlnStatement>
+                <Identifier>(ID ,n)</Identifier>
+            </ReadlnStatement>
+            <CallProc>
+                <Identifier>(ID ,hanoi)</Identifier>
+                <ArgumentsProc>
+                    <Identifier>(ID ,n)</Identifier>
+                    <ExprOpIntConst>(INT_CONST, 1)</ExprOpIntConst>
+                    <ExprOpIntConst>(INT_CONST, 2)</ExprOpIntConst>
+                    <ExprOpIntConst>(INT_CONST, 3)</ExprOpIntConst>
+                </ArgumentsProc>
+            </CallProc>
+        </BodyProc>
+    </Proc>
+</Program>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Program>
+    <VarDecl>
+        <Type>(INT)</Type>
+        <IdInitAssign>
+            <Identifier>(ID ,n)</Identifier>
+            <ExprOpIntConst>(INT_CONST, 0)</ExprOpIntConst>
+        </IdInitAssign>
+    </VarDecl>
+    <Proc>
+        <Identifier>(ID ,factorial)</Identifier>
+        <ParDeclList>
+            <ParDecl>
+                <Type>(INT)</Type>
+                <Identifier>(ID ,n)</Identifier>
+            </ParDecl>
+        </ParDeclList>
+        <ResultTypeList>
+            <ResultType>
+                <Type>(INT)</Type>
+            </ResultType>
+        </ResultTypeList>
+        <BodyProc>
+            <VarDecl>
+                <Type>(INT)</Type>
+                <IdInitAssign>
+                    <Identifier>(ID ,result)</Identifier>
+                    <ExprOpIntConst>(INT_CONST, 0)</ExprOpIntConst>
+                </IdInitAssign>
+            </VarDecl>
+            <IfStatement>
+                <ExprOpRelopEQ>
+                    <Identifier>(ID ,n)</Identifier>
+                    <ExprOpIntConst>(INT_CONST, 0)</ExprOpIntConst>
+                </ExprOpRelopEQ>
+                <AssignStatement>
+                    <Identifier>(ID ,result)</Identifier>
+                    <ExprOpIntConst>(INT_CONST, 1)</ExprOpIntConst>
+                </AssignStatement>
+                <ElseStatement>
+                    <AssignStatement>
+                        <Identifier>(ID ,result)</Identifier>
+                        <ExprOpMathTimes>
+                            <Identifier>(ID ,n)</Identifier>
+                            <CallProc>
+                                <Identifier>(ID ,factorial)</Identifier>
+                                <ArgumentsProc>
+                                    <ExprOpMathSub>
+                                        <Identifier>(ID ,n)</Identifier>
+                                        <ExprOpIntConst>(INT_CONST, 1)</ExprOpIntConst>
+                                    </ExprOpMathSub>
+                                </ArgumentsProc>
+                            </CallProc>
+                        </ExprOpMathTimes>
+                    </AssignStatement>
+                </ElseStatement>
+            </IfStatement>
+            <ReturnExpr>
+                <Identifier>(ID ,result)</Identifier>
+            </ReturnExpr>
+        </BodyProc>
+    </Proc>
+    <Proc>
+        <Identifier>(ID ,main)</Identifier>
+        <ResultTypeList>
+            <ResultType>
+                <Type>(VOID)</Type>
+            </ResultType>
+        </ResultTypeList>
+        <BodyProc>
+            <WhileStatement>
+                <WriteStatement>
+                    <ExprOpStringConst>(STRING_CONST, Enter n, or &gt;= 10 to exit: )</ExprOpStringConst>
+                </WriteStatement>
+                <ReadlnStatement>
+                    <Identifier>(ID ,n)</Identifier>
+                </ReadlnStatement>
+                <ExprOpRelopLT>
+                    <Identifier>(ID ,n)</Identifier>
+                    <ExprOpIntConst>(INT_CONST, 10)</ExprOpIntConst>
+                </ExprOpRelopLT>
+                <WriteStatement>
+                    <ExprOpStringConst>(STRING_CONST, Factorial of )</ExprOpStringConst>
+                    <Identifier>(ID ,n)</Identifier>
+                    <ExprOpStringConst>(STRING_CONST,  is )</ExprOpStringConst>
+                    <CallProc>
+                        <Identifier>(ID ,factorial)</Identifier>
+                        <ArgumentsProc>
+                            <Identifier>(ID ,n)</Identifier>
+                        </ArgumentsProc>
+                    </CallProc>
+                    <ExprOpStringConst>(STRING_CONST, \n)</ExprOpStringConst>
+                </WriteStatement>
+            </WhileStatement>
+        </BodyProc>
+    </Proc>
+</Program>

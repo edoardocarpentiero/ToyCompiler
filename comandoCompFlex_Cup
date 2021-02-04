@@ -1,0 +1,18 @@
+WINDOWS
+C:\JFLEX\bin\jflex -d src srcjflexcup\Lexer.flex
+java -jar C:\CUP\java-cup-11b.jar -locations -destdir src srcjflexcup/Parser.cup
+java -jar C:\CUP\java-cup-11b.jar -locations -dump_states  -destdir src srcjflexcup/Parser.cup 2>dump.txt
+
+MAC
+.../jflex-1.8.2/bin/jflex -d src srcjflexcup/Lexer.flex
+java -jar ../CUP/java-cup-11b.jar -locations -destdir src srcjflexcup/Parser.cup
+java -jar ../CUP/java-cup-11b.jar -locations -dump_states  -destdir src srcjflexcup/Parser.cup 2>dump.txt
+
+Comando clang
+clang -pthread -lm -o <nomeFileDestinazione> <nomeFileDaCompilare.c>
+
+cd test_files/goodTest/
+
+
+
+

@@ -1,0 +1,23 @@
+/*
+Somma di 2 numeri Toy
+*/
+
+int primo, secondo, tot;
+
+proc somma ()int:
+    write("Inserire il primo argomento:\n");
+    readln(primo);
+    write("Inserire il secondo argomento:\n");
+    readln(secondo);
+    tot:=primo+secondo;
+    ->tot
+corp;
+
+proc main()void :
+    int a:=0;
+    write("\n",somma());
+    write("\n");
+
+    ->
+corp;
+

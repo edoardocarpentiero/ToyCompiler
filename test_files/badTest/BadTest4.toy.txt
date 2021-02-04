@@ -1,0 +1,35 @@
+/*
+Bad Code 4
+Type checking error assegnazione a int stringa, type mismatch
+*/
+
+float primo, tot:=0, tot2:=0;
+bool secondo;
+string i:="0";
+
+proc moltiplica () float:
+
+    write("Inserire il primo argomento:\n");
+    readln(primo);
+    write("Inserire il secondo argomento:\n");
+    readln(secondo);
+
+    tot:=primo;
+    tot2:=primo;
+
+    while
+    i:=i+1;
+    -> i < secondo
+    do
+    tot:=tot+primo;
+    tot2:=tot2*primo;
+    od;
+
+    ->tot,tot2
+corp;
+
+proc main()void :
+    int a:=0;
+    write("ciao",moltiplica());
+    ->
+corp;

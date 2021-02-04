@@ -1,0 +1,18 @@
+
+/*
+Bad Test 2
+Scoping Error main mancante
+*/
+
+float primo, secondo, tot;
+
+proc divisione ()int:
+    write("Inserire il dividendo:\n");
+    readln(primo);
+    write("Inserire il divisore:\n");
+    readln(secondo);
+    tot:=primo/secondo;
+    ->tot
+corp;
+
+

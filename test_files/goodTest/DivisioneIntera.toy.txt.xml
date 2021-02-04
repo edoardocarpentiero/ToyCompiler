@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Program>
+    <VarDecl>
+        <Type>(INT)</Type>
+        <IdInit>
+            <Identifier>(ID ,primo)</Identifier>
+        </IdInit>
+        <IdInit>
+            <Identifier>(ID ,secondo)</Identifier>
+        </IdInit>
+        <IdInit>
+            <Identifier>(ID ,tot)</Identifier>
+        </IdInit>
+    </VarDecl>
+    <Proc>
+        <Identifier>(ID ,divisione)</Identifier>
+        <ResultTypeList>
+            <ResultType>
+                <Type>(INT)</Type>
+            </ResultType>
+        </ResultTypeList>
+        <BodyProc>
+            <WriteStatement>
+                <ExprOpStringConst>(STRING_CONST, Inserire il dividendo:\n)</ExprOpStringConst>
+            </WriteStatement>
+            <ReadlnStatement>
+                <Identifier>(ID ,primo)</Identifier>
+            </ReadlnStatement>
+            <WriteStatement>
+                <ExprOpStringConst>(STRING_CONST, Inserire il divisore:\n)</ExprOpStringConst>
+            </WriteStatement>
+            <ReadlnStatement>
+                <Identifier>(ID ,secondo)</Identifier>
+            </ReadlnStatement>
+            <AssignStatement>
+                <Identifier>(ID ,tot)</Identifier>
+                <ExprOpMathDiv>
+                    <Identifier>(ID ,primo)</Identifier>
+                    <Identifier>(ID ,secondo)</Identifier>
+                </ExprOpMathDiv>
+            </AssignStatement>
+            <ReturnExpr>
+                <Identifier>(ID ,tot)</Identifier>
+            </ReturnExpr>
+        </BodyProc>
+    </Proc>
+    <Proc>
+        <Identifier>(ID ,main)</Identifier>
+        <ResultTypeList>
+            <ResultType>
+                <Type>(VOID)</Type>
+            </ResultType>
+        </ResultTypeList>
+        <BodyProc>
+            <VarDecl>
+                <Type>(INT)</Type>
+                <IdInitAssign>
+                    <Identifier>(ID ,a)</Identifier>
+                    <ExprOpIntConst>(INT_CONST, 0)</ExprOpIntConst>
+                </IdInitAssign>
+            </VarDecl>
+            <WriteStatement>
+                <CallProc>
+                    <Identifier>(ID ,divisione)</Identifier>
+                </CallProc>
+            </WriteStatement>
+        </BodyProc>
+    </Proc>
+</Program>

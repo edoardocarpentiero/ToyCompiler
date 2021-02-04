@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Program>
+    <VarDecl>
+        <Type>(INT)</Type>
+        <IdInitAssign>
+            <Identifier>(ID ,n)</Identifier>
+            <ExprOpIntConst>(INT_CONST, 0)</ExprOpIntConst>
+        </IdInitAssign>
+    </VarDecl>
+    <VarDecl>
+        <Type>(INT)</Type>
+        <IdInit>
+            <Identifier>(ID ,terzo)</Identifier>
+        </IdInit>
+    </VarDecl>
+    <VarDecl>
+        <Type>(INT)</Type>
+        <IdInitAssign>
+            <Identifier>(ID ,i)</Identifier>
+            <ExprOpIntConst>(INT_CONST, 2)</ExprOpIntConst>
+        </IdInitAssign>
+    </VarDecl>
+    <VarDecl>
+        <Type>(INT)</Type>
+        <IdInitAssign>
+            <Identifier>(ID ,primo)</Identifier>
+            <ExprOpIntConst>(INT_CONST, 1)</ExprOpIntConst>
+        </IdInitAssign>
+    </VarDecl>
+    <VarDecl>
+        <Type>(INT)</Type>
+        <IdInitAssign>
+            <Identifier>(ID ,secondo)</Identifier>
+            <ExprOpIntConst>(INT_CONST, 1)</ExprOpIntConst>
+        </IdInitAssign>
+    </VarDecl>
+    <Proc>
+        <Identifier>(ID ,fibonacci)</Identifier>
+        <ParDeclList>
+            <ParDecl>
+                <Type>(INT)</Type>
+                <Identifier>(ID ,n)</Identifier>
+            </ParDecl>
+        </ParDeclList>
+        <ResultTypeList>
+            <ResultType>
+                <Type>(VOID)</Type>
+            </ResultType>
+        </ResultTypeList>
+        <BodyProc>
+            <IfStatement>
+                <ExprOpRelopEQ>
+                    <Identifier>(ID ,n)</Identifier>
+                    <ExprOpIntConst>(INT_CONST, 0)</ExprOpIntConst>
+                </ExprOpRelopEQ>
+                <WriteStatement>
+                    <ExprOpStringConst>(STRING_CONST, 0)</ExprOpStringConst>
+                </WriteStatement>
+                <ElifStatement>
+                    <ExprOpRelopEQ>
+                        <Identifier>(ID ,n)</Identifier>
+                        <ExprOpIntConst>(INT_CONST, 1)</ExprOpIntConst>
+                    </ExprOpRelopEQ>
+                    <WriteStatement>
+                        <ExprOpStringConst>(STRING_CONST, 1)</ExprOpStringConst>
+                    </WriteStatement>
+                </ElifStatement>
+                <ElseStatement>
+                    <WriteStatement>
+                        <Identifier>(ID ,primo)</Identifier>
+                        <ExprOpStringConst>(STRING_CONST,  )</ExprOpStringConst>
+                    </WriteStatement>
+                    <WriteStatement>
+                        <Identifier>(ID ,secondo)</Identifier>
+                        <ExprOpStringConst>(STRING_CONST,  )</ExprOpStringConst>
+                    </WriteStatement>
+                    <WhileStatement>
+                        <AssignStatement>
+                            <Identifier>(ID ,i)</Identifier>
+                            <ExprOpMathPlus>
+                                <Identifier>(ID ,i)</Identifier>
+                                <ExprOpIntConst>(INT_CONST, 1)</ExprOpIntConst>
+                            </ExprOpMathPlus>
+                        </AssignStatement>
+                        <ExprOpRelopLE>
+                            <Identifier>(ID ,i)</Identifier>
+                            <Identifier>(ID ,n)</Identifier>
+                        </ExprOpRelopLE>
+                        <AssignStatement>
+                            <Identifier>(ID ,terzo)</Identifier>
+                            <ExprOpMathPlus>
+                                <Identifier>(ID ,primo)</Identifier>
+                                <Identifier>(ID ,secondo)</Identifier>
+                            </ExprOpMathPlus>
+                        </AssignStatement>
+                        <AssignStatement>
+                            <Identifier>(ID ,primo)</Identifier>
+                            <Identifier>(ID ,secondo)</Identifier>
+                        </AssignStatement>
+                        <AssignStatement>
+                            <Identifier>(ID ,secondo)</Identifier>
+                            <Identifier>(ID ,terzo)</Identifier>
+                        </AssignStatement>
+                        <WriteStatement>
+                            <Identifier>(ID ,terzo)</Identifier>
+                            <ExprOpStringConst>(STRING_CONST,  )</ExprOpStringConst>
+                        </WriteStatement>
+                    </WhileStatement>
+                </ElseStatement>
+            </IfStatement>
+        </BodyProc>
+    </Proc>
+    <Proc>
+        <Identifier>(ID ,f)</Identifier>
+        <ResultTypeList>
+            <ResultType>
+                <Type>(INT)</Type>
+            </ResultType>
+        </ResultTypeList>
+        <BodyProc>
+            <ReturnExpr>
+                <ExprOpIntConst>(INT_CONST, 2)</ExprOpIntConst>
+            </ReturnExpr>
+        </BodyProc>
+    </Proc>
+    <Proc>
+        <Identifier>(ID ,d)</Identifier>
+        <ResultTypeList>
+            <ResultType>
+                <Type>(INT)</Type>
+            </ResultType>
+        </ResultTypeList>
+        <BodyProc>
+            <ReturnExpr>
+                <ExprOpIntConst>(INT_CONST, 2)</ExprOpIntConst>
+            </ReturnExpr>
+        </BodyProc>
+    </Proc>
+    <Proc>
+        <Identifier>(ID ,main)</Identifier>
+        <ResultTypeList>
+            <ResultType>
+                <Type>(VOID)</Type>
+            </ResultType>
+        </ResultTypeList>
+        <BodyProc>
+            <WriteStatement>
+                <ExprOpStringConst>(STRING_CONST, Quanti numeri di Fibonacci vuoi Visualizzare?)</ExprOpStringConst>
+            </WriteStatement>
+            <ReadlnStatement>
+                <Identifier>(ID ,n)</Identifier>
+            </ReadlnStatement>
+            <CallProc>
+                <Identifier>(ID ,fibonacci)</Identifier>
+                <ArgumentsProc>
+                    <Identifier>(ID ,n)</Identifier>
+                </ArgumentsProc>
+            </CallProc>
+            <WriteStatement>
+                <ExprOpMathPlus>
+                    <CallProc>
+                        <Identifier>(ID ,f)</Identifier>
+                    </CallProc>
+                    <CallProc>
+                        <Identifier>(ID ,d)</Identifier>
+                    </CallProc>
+                </ExprOpMathPlus>
+            </WriteStatement>
+        </BodyProc>
+    </Proc>
+</Program>

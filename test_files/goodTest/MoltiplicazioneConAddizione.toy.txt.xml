@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Program>
+    <VarDecl>
+        <Type>(FLOAT)</Type>
+        <IdInit>
+            <Identifier>(ID ,primo)</Identifier>
+        </IdInit>
+        <IdInit>
+            <Identifier>(ID ,secondo)</Identifier>
+        </IdInit>
+        <IdInitAssign>
+            <Identifier>(ID ,tot)</Identifier>
+            <ExprOpIntConst>(INT_CONST, 0)</ExprOpIntConst>
+        </IdInitAssign>
+    </VarDecl>
+    <VarDecl>
+        <Type>(INT)</Type>
+        <IdInitAssign>
+            <Identifier>(ID ,i)</Identifier>
+            <ExprOpIntConst>(INT_CONST, 0)</ExprOpIntConst>
+        </IdInitAssign>
+    </VarDecl>
+    <Proc>
+        <Identifier>(ID ,moltiplica)</Identifier>
+        <ResultTypeList>
+            <ResultType>
+                <Type>(FLOAT)</Type>
+            </ResultType>
+        </ResultTypeList>
+        <BodyProc>
+            <WriteStatement>
+                <ExprOpStringConst>(STRING_CONST, Inserire il primo argomento:\n)</ExprOpStringConst>
+            </WriteStatement>
+            <ReadlnStatement>
+                <Identifier>(ID ,primo)</Identifier>
+            </ReadlnStatement>
+            <WriteStatement>
+                <ExprOpStringConst>(STRING_CONST, Inserire il secondo argomento:\n)</ExprOpStringConst>
+            </WriteStatement>
+            <ReadlnStatement>
+                <Identifier>(ID ,secondo)</Identifier>
+            </ReadlnStatement>
+            <WhileStatement>
+                <AssignStatement>
+                    <Identifier>(ID ,i)</Identifier>
+                    <ExprOpMathPlus>
+                        <Identifier>(ID ,i)</Identifier>
+                        <ExprOpIntConst>(INT_CONST, 1)</ExprOpIntConst>
+                    </ExprOpMathPlus>
+                </AssignStatement>
+                <ExprOpRelopLE>
+                    <Identifier>(ID ,i)</Identifier>
+                    <Identifier>(ID ,secondo)</Identifier>
+                </ExprOpRelopLE>
+                <AssignStatement>
+                    <Identifier>(ID ,tot)</Identifier>
+                    <ExprOpMathPlus>
+                        <Identifier>(ID ,tot)</Identifier>
+                        <Identifier>(ID ,primo)</Identifier>
+                    </ExprOpMathPlus>
+                </AssignStatement>
+            </WhileStatement>
+            <ReturnExpr>
+                <Identifier>(ID ,tot)</Identifier>
+            </ReturnExpr>
+        </BodyProc>
+    </Proc>
+    <Proc>
+        <Identifier>(ID ,main)</Identifier>
+        <ResultTypeList>
+            <ResultType>
+                <Type>(VOID)</Type>
+            </ResultType>
+        </ResultTypeList>
+        <BodyProc>
+            <WriteStatement>
+                <CallProc>
+                    <Identifier>(ID ,moltiplica)</Identifier>
+                </CallProc>
+            </WriteStatement>
+            <WriteStatement>
+                <ExprOpStringConst>(STRING_CONST, \n)</ExprOpStringConst>
+            </WriteStatement>
+        </BodyProc>
+    </Proc>
+</Program>

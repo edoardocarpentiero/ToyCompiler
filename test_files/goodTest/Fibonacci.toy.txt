@@ -1,0 +1,52 @@
+
+/*
+ Fibonacci
+ */
+int n := 0;
+int terzo;
+int i := 2;
+int primo := 1;
+int secondo :=1;
+
+proc fibonacci(int n)void:
+
+    if n = 0 then
+        write("0");
+    elif n = 1 then
+        write("1");
+    else
+        write(primo, " ");
+        write(secondo, " ");
+        while
+            i:=i+1;
+            -> i <= n
+        do
+        terzo:=primo+secondo;
+        primo:=secondo;
+        secondo:=terzo;
+        write(terzo, " ");
+        od;
+
+    fi;
+    ->
+corp;
+
+proc f()int:
+
+-> 2
+corp;
+
+proc d()int:
+
+-> 2
+corp;
+
+proc main()void:
+
+    	write("Quanti numeri di Fibonacci vuoi Visualizzare?");
+    	readln(n);
+    	fibonacci(n);
+    	write(f()+d());
+
+    ->
+corp;

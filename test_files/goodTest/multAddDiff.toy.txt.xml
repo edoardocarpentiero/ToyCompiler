@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Program>
+    <VarDecl>
+        <Type>(STRING)</Type>
+        <IdInitAssign>
+            <Identifier>(ID ,nome)</Identifier>
+            <ExprOpStringConst>(STRING_CONST, Michele)</ExprOpStringConst>
+        </IdInitAssign>
+    </VarDecl>
+    <VarDecl>
+        <Type>(INT)</Type>
+        <IdInit>
+            <Identifier>(ID ,a)</Identifier>
+        </IdInit>
+    </VarDecl>
+    <Proc>
+        <Identifier>(ID ,main)</Identifier>
+        <ResultTypeList>
+            <ResultType>
+                <Type>(VOID)</Type>
+            </ResultType>
+        </ResultTypeList>
+        <BodyProc>
+            <VarDecl>
+                <Type>(INT)</Type>
+                <IdInit>
+                    <Identifier>(ID ,a)</Identifier>
+                </IdInit>
+                <IdInit>
+                    <Identifier>(ID ,b)</Identifier>
+                </IdInit>
+                <IdInitAssign>
+                    <Identifier>(ID ,c)</Identifier>
+                    <ExprOpIntConst>(INT_CONST, 0)</ExprOpIntConst>
+                </IdInitAssign>
+            </VarDecl>
+            <AssignStatement>
+                <Identifier>(ID ,a)</Identifier>
+                <Identifier>(ID ,b)</Identifier>
+                <Identifier>(ID ,c)</Identifier>
+                <CallProc>
+                    <Identifier>(ID ,multAddDiff)</Identifier>
+                </CallProc>
+            </AssignStatement>
+            <WriteStatement>
+                <ExprOpStringConst>(STRING_CONST, Ciao)</ExprOpStringConst>
+                <Identifier>(ID ,nome)</Identifier>
+            </WriteStatement>
+            <CallProc>
+                <Identifier>(ID ,writeNewLines)</Identifier>
+                <ArgumentsProc>
+                    <ExprOpIntConst>(INT_CONST, 2)</ExprOpIntConst>
+                </ArgumentsProc>
+            </CallProc>
+            <WriteStatement>
+                <ExprOpStringConst>(STRING_CONST, I tuoi valori sono:\n)</ExprOpStringConst>
+                <Identifier>(ID ,a)</Identifier>
+                <Identifier>(ID ,b)</Identifier>
+                <Identifier>(ID ,c)</Identifier>
+            </WriteStatement>
+        </BodyProc>
+    </Proc>
+    <Proc>
+        <Identifier>(ID ,multAddDiff)</Identifier>
+        <ResultTypeList>
+            <ResultType>
+                <Type>(INT)</Type>
+            </ResultType>
+            <ResultType>
+                <Type>(INT)</Type>
+            </ResultType>
+            <ResultType>
+                <Type>(INT)</Type>
+            </ResultType>
+        </ResultTypeList>
+        <BodyProc>
+            <VarDecl>
+                <Type>(INT)</Type>
+                <IdInit>
+                    <Identifier>(ID ,primo)</Identifier>
+                </IdInit>
+                <IdInit>
+                    <Identifier>(ID ,secondo)</Identifier>
+                </IdInit>
+                <IdInit>
+                    <Identifier>(ID ,mul)</Identifier>
+                </IdInit>
+                <IdInit>
+                    <Identifier>(ID ,add)</Identifier>
+                </IdInit>
+                <IdInit>
+                    <Identifier>(ID ,diff)</Identifier>
+                </IdInit>
+            </VarDecl>
+            <WriteStatement>
+                <ExprOpStringConst>(STRING_CONST, Inserire il primo argomento:\n)</ExprOpStringConst>
+            </WriteStatement>
+            <ReadlnStatement>
+                <Identifier>(ID ,primo)</Identifier>
+            </ReadlnStatement>
+            <WriteStatement>
+                <ExprOpStringConst>(STRING_CONST, Inserire il secondo argomento:\n)</ExprOpStringConst>
+            </WriteStatement>
+            <ReadlnStatement>
+                <Identifier>(ID ,secondo)</Identifier>
+            </ReadlnStatement>
+            <AssignStatement>
+                <Identifier>(ID ,mul)</Identifier>
+                <Identifier>(ID ,add)</Identifier>
+                <Identifier>(ID ,diff)</Identifier>
+                <ExprOpMathTimes>
+                    <Identifier>(ID ,primo)</Identifier>
+                    <Identifier>(ID ,secondo)</Identifier>
+                </ExprOpMathTimes>
+                <ExprOpMathPlus>
+                    <Identifier>(ID ,secondo)</Identifier>
+                    <Identifier>(ID ,primo)</Identifier>
+                </ExprOpMathPlus>
+                <ExprOpMathSub>
+                    <Identifier>(ID ,primo)</Identifier>
+                    <Identifier>(ID ,primo)</Identifier>
+                </ExprOpMathSub>
+            </AssignStatement>
+            <ReturnExpr>
+                <Identifier>(ID ,mul)</Identifier>
+                <Identifier>(ID ,add)</Identifier>
+                <Identifier>(ID ,diff)</Identifier>
+            </ReturnExpr>
+        </BodyProc>
+    </Proc>
+    <Proc>
+        <Identifier>(ID ,writeNewLines)</Identifier>
+        <ParDeclList>
+            <ParDecl>
+                <Type>(INT)</Type>
+                <Identifier>(ID ,n)</Identifier>
+            </ParDecl>
+        </ParDeclList>
+        <ResultTypeList>
+            <ResultType>
+                <Type>(VOID)</Type>
+            </ResultType>
+        </ResultTypeList>
+        <BodyProc>
+            <WhileStatement>
+                <ExprOpRelopGT>
+                    <Identifier>(ID ,n)</Identifier>
+                    <ExprOpIntConst>(INT_CONST, 0)</ExprOpIntConst>
+                </ExprOpRelopGT>
+                <WriteStatement>
+                    <ExprOpStringConst>(STRING_CONST, \n)</ExprOpStringConst>
+                </WriteStatement>
+                <AssignStatement>
+                    <Identifier>(ID ,n)</Identifier>
+                    <ExprOpMathSub>
+                        <Identifier>(ID ,n)</Identifier>
+                        <ExprOpIntConst>(INT_CONST, 1)</ExprOpIntConst>
+                    </ExprOpMathSub>
+                </AssignStatement>
+            </WhileStatement>
+        </BodyProc>
+    </Proc>
+</Program>

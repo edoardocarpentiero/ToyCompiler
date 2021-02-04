@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Program>
+    <VarDecl>
+        <Type>(FLOAT)</Type>
+        <IdInit>
+            <Identifier>(ID ,primo)</Identifier>
+        </IdInit>
+        <IdInit>
+            <Identifier>(ID ,secondo)</Identifier>
+        </IdInit>
+        <IdInit>
+            <Identifier>(ID ,tot)</Identifier>
+        </IdInit>
+    </VarDecl>
+    <VarDecl>
+        <Type>(INT)</Type>
+        <IdInit>
+            <Identifier>(ID ,op)</Identifier>
+        </IdInit>
+    </VarDecl>
+    <Proc>
+        <Identifier>(ID ,calc)</Identifier>
+        <ResultTypeList>
+            <ResultType>
+                <Type>(FLOAT)</Type>
+            </ResultType>
+        </ResultTypeList>
+        <BodyProc>
+            <WriteStatement>
+                <ExprOpStringConst>(STRING_CONST, Inserire il primo argomento:\n)</ExprOpStringConst>
+            </WriteStatement>
+            <ReadlnStatement>
+                <Identifier>(ID ,primo)</Identifier>
+            </ReadlnStatement>
+            <WriteStatement>
+                <ExprOpStringConst>(STRING_CONST, Inserire il secondo argomento:\n)</ExprOpStringConst>
+            </WriteStatement>
+            <ReadlnStatement>
+                <Identifier>(ID ,secondo)</Identifier>
+            </ReadlnStatement>
+            <WriteStatement>
+                <ExprOpStringConst>(STRING_CONST, Inserire operatore:\n)</ExprOpStringConst>
+            </WriteStatement>
+            <WriteStatement>
+                <ExprOpStringConst>(STRING_CONST, 1 per Addizione \n)</ExprOpStringConst>
+            </WriteStatement>
+            <WriteStatement>
+                <ExprOpStringConst>(STRING_CONST, 2 per Sottrazione \n)</ExprOpStringConst>
+            </WriteStatement>
+            <WriteStatement>
+                <ExprOpStringConst>(STRING_CONST, 3 per Moltiplicazione \n)</ExprOpStringConst>
+            </WriteStatement>
+            <WriteStatement>
+                <ExprOpStringConst>(STRING_CONST, 4 per Divisione \n)</ExprOpStringConst>
+            </WriteStatement>
+            <ReadlnStatement>
+                <Identifier>(ID ,op)</Identifier>
+            </ReadlnStatement>
+            <IfStatement>
+                <ExprOpRelopEQ>
+                    <Identifier>(ID ,op)</Identifier>
+                    <ExprOpIntConst>(INT_CONST, 1)</ExprOpIntConst>
+                </ExprOpRelopEQ>
+                <AssignStatement>
+                    <Identifier>(ID ,tot)</Identifier>
+                    <ExprOpMathPlus>
+                        <Identifier>(ID ,primo)</Identifier>
+                        <Identifier>(ID ,secondo)</Identifier>
+                    </ExprOpMathPlus>
+                </AssignStatement>
+                <ElifStatement>
+                    <ExprOpRelopEQ>
+                        <Identifier>(ID ,op)</Identifier>
+                        <ExprOpIntConst>(INT_CONST, 4)</ExprOpIntConst>
+                    </ExprOpRelopEQ>
+                    <AssignStatement>
+                        <Identifier>(ID ,tot)</Identifier>
+                        <ExprOpMathDiv>
+                            <Identifier>(ID ,primo)</Identifier>
+                            <Identifier>(ID ,secondo)</Identifier>
+                        </ExprOpMathDiv>
+                    </AssignStatement>
+                </ElifStatement>
+                <ElifStatement>
+                    <ExprOpRelopEQ>
+                        <Identifier>(ID ,op)</Identifier>
+                        <ExprOpIntConst>(INT_CONST, 3)</ExprOpIntConst>
+                    </ExprOpRelopEQ>
+                    <AssignStatement>
+                        <Identifier>(ID ,tot)</Identifier>
+                        <ExprOpMathTimes>
+                            <Identifier>(ID ,primo)</Identifier>
+                            <Identifier>(ID ,secondo)</Identifier>
+                        </ExprOpMathTimes>
+                    </AssignStatement>
+                </ElifStatement>
+                <ElifStatement>
+                    <ExprOpRelopEQ>
+                        <Identifier>(ID ,op)</Identifier>
+                        <ExprOpIntConst>(INT_CONST, 2)</ExprOpIntConst>
+                    </ExprOpRelopEQ>
+                    <AssignStatement>
+                        <Identifier>(ID ,tot)</Identifier>
+                        <ExprOpMathSub>
+                            <Identifier>(ID ,primo)</Identifier>
+                            <Identifier>(ID ,secondo)</Identifier>
+                        </ExprOpMathSub>
+                    </AssignStatement>
+                </ElifStatement>
+                <ElseStatement>
+                    <WriteStatement>
+                        <ExprOpStringConst>(STRING_CONST, errore\n)</ExprOpStringConst>
+                    </WriteStatement>
+                </ElseStatement>
+            </IfStatement>
+            <ReturnExpr>
+                <Identifier>(ID ,tot)</Identifier>
+            </ReturnExpr>
+        </BodyProc>
+    </Proc>
+    <Proc>
+        <Identifier>(ID ,main)</Identifier>
+        <ResultTypeList>
+            <ResultType>
+                <Type>(VOID)</Type>
+            </ResultType>
+        </ResultTypeList>
+        <BodyProc>
+            <VarDecl>
+                <Type>(FLOAT)</Type>
+                <IdInitAssign>
+                    <Identifier>(ID ,a)</Identifier>
+                    <CallProc>
+                        <Identifier>(ID ,calc)</Identifier>
+                    </CallProc>
+                </IdInitAssign>
+            </VarDecl>
+            <WriteStatement>
+                <ExprOpStringConst>(STRING_CONST, il risultato e' )</ExprOpStringConst>
+                <Identifier>(ID ,a)</Identifier>
+            </WriteStatement>
+        </BodyProc>
+    </Proc>
+</Program>

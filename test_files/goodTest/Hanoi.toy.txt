@@ -1,0 +1,37 @@
+// hanoi.t - standard "Towers of Hanoi" in toy.
+
+proc printPeg(int peg)void:
+string a, b;
+
+    if peg = 1 then
+        write("left");
+    elif peg = 2 then
+        write("center");
+    else
+        write("right");
+    fi;
+    ->
+corp;
+
+proc hanoi(int n, toPeg; float fromPeg, usingPeg)void:
+
+    if n <> 0 then
+        hanoi(n - 1, fromPeg, toPeg, usingPeg);
+        write("Move disk from ");
+        printPeg(fromPeg);
+        write(" peg to ");
+        printPeg(toPeg);
+        write(" peg.\n");
+        hanoi(n - 1, usingPeg, fromPeg, toPeg);
+    fi;
+    ->
+corp;
+
+proc main()void:
+    int n := 0;
+
+    write("How many pegs? ");
+    readln(n);
+    hanoi(n, 1, 2, 3);
+    ->
+corp;
